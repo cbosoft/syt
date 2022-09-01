@@ -1,0 +1,7 @@
+.idea
+.env
+.pytest_cache
+*.pyc
+tests/*.db
+*.egg-info
+.DS_Store
