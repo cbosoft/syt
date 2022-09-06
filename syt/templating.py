@@ -14,6 +14,32 @@ def eval_line(line: str) -> Optional[str]:
     return None
 
 
+def escaping_split(s: str):
+    parts = []
+    part = ''
+    escapes = ''
+    for c in s:
+        if c == ',' and not escapes:
+            parts.append(part)
+            part = ''
+        else:
+            if c in '"\'':
+                if escapes.endswith(c):
+                    escapes = escapes[:-1]
+                else:
+                    escapes += c
+            elif c in '({[':
+                escapes += c
+            elif c in ')}]':
+                op = dict(zip(')}]', '({['))[c]
+                assert escapes[-1] == op
+                escapes = escapes[:-1]
+            part += c
+    assert not escapes
+    if part:
+        parts.append(part)
+    return parts
+
 
 def read_template(filename: str):
     with open(filename) as f:
@@ -29,7 +55,7 @@ def read_template(filename: str):
             if expr.startswith('!'):
                 counted[k] = expr
             else:
-                permuted[k] = expr.split(', ')
+                permuted[k] = escaping_split(expr)
 
     template = ''.join(lines)
 

@@ -11,5 +11,6 @@ def test_foo():
     cfg.root.node.subnode.key2 = ''
     cfg.root.node.subnode.key3 = 0.1
     cfg.root.node.subnode.key4 = 4.5
+    cfg.root.node.subnode.key5 = ['0']
     cfgs = cfg.apply_template('data/input1.syt')
-    assert len(cfgs) == 9
+    assert len(cfgs) == 27
