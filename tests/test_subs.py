@@ -1,7 +1,7 @@
 from syt import CfgNode
 
 
-def test_foo():
+def test_templating_1():
     cfg = CfgNode()
     cfg.root = CfgNode()
     cfg.root.ident = None
@@ -13,4 +13,5 @@ def test_foo():
     cfg.root.node.subnode.key4 = 4.5
     cfg.root.node.subnode.key5 = ['0']
     cfgs = cfg.apply_template('data/input1.syt')
-    assert len(cfgs) == 27
+    assert len(cfgs) == 81
+
