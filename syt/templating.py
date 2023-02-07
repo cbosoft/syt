@@ -50,20 +50,18 @@ def read_template(filename: str):
     for i, line in enumerate(lines):
         expr = eval_line(line)
         if expr:
-            k = f'[[{expr}]]'
+            k = (i, f'[[{expr}]]')
             expr = expr.strip()
             if expr.startswith('!'):
                 counted[k] = expr
             else:
                 permuted[k] = escaping_split(expr)
 
-    template = ''.join(lines)
-
     variants = []
     for i, p in enumerate(product(*permuted.values())):
-        variant = template
-        for k, sub in zip(permuted.keys(), p):
-            variant = variant.replace(k, sub)
+        variant = list(lines)
+        for (j, k), sub in zip(permuted.keys(), p):
+            variant[j] = variant[j].replace(k, sub)
 
         for k, v in counted.items():
             if v == '!ID':
@@ -71,6 +69,6 @@ def read_template(filename: str):
             else:
                 raise ValueError
             variant = variant.replace(k, sub)
-        variants.append(variant)
+        variants.append(''.join(variant))
 
     return variants
